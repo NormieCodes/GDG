@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GDG Recruitment Registration</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧑‍💻</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#4285F4;--red:#EA4335;--yellow:#FBBC04;--green:#34A853;
+  --bg:#F8F9FA;--surface:#FFFFFF;--ink:#202124;--muted:#5F6368;--line:#DADCE0;--err:#C5221F;--errbg:#FCE8E6;
+  --blue-t:#E8F0FE;--red-t:#FCE8E6;--green-t:#E6F4EA;
+  --blue-d:#1A73E8;--green-d:#188038;--red-d:#D93025;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#17181B;--surface:#202124;--ink:#E8EAED;--muted:#9AA0A6;--line:#3C4043;--err:#F28B82;--errbg:#3B2423;
+    --blue-t:#1F2A3D;--red-t:#3B2423;--green-t:#1E3326;--blue-d:#8AB4F8;--green-d:#81C995;--red-d:#F28B82;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17181B;--surface:#202124;--ink:#E8EAED;--muted:#9AA0A6;--line:#3C4043;--err:#F28B82;--errbg:#3B2423;
+  --blue-t:#1F2A3D;--red-t:#3B2423;--green-t:#1E3326;--blue-d:#8AB4F8;--green-d:#81C995;--red-d:#F28B82;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg) radial-gradient(color-mix(in srgb,var(--muted) 38%,transparent) 1px,transparent 1.3px) 0 0/24px 24px;color:var(--ink);font-family:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5}
+
+/* layout */
+.wrap{max-width:1080px;margin:0 auto;padding:18px 20px 56px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:34px}
+.top b{font-weight:700;letter-spacing:-.01em;margin-right:6px}
+.top .sm{color:var(--muted);font-size:.9rem}
+.dots{display:flex;gap:4px}.dots i{width:11px;height:11px;border-radius:50%}
+.dots i:nth-child(1){background:var(--blue)}.dots i:nth-child(2){background:var(--red)}.dots i:nth-child(3){background:var(--yellow)}.dots i:nth-child(4){background:var(--green)}
+.shell{display:grid;grid-template-columns:minmax(0,370px) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start}
+.hero{position:sticky;top:24px}
+h1{font-size:clamp(2.2rem,4.6vw,3.2rem);line-height:1.04;letter-spacing:-.035em;font-weight:800;margin:0 0 12px}
+.lead{color:var(--muted);margin:0;max-width:40ch}
+.mark{width:min(280px,80%);height:auto;display:block;margin:0 0 26px;overflow:visible}
+.mark .br{stroke-dasharray:60;stroke-dashoffset:60;animation:draw .9s .1s cubic-bezier(.3,.7,.2,1) forwards}
+.mark .br2{animation-delay:.3s}
+.mark circle{transform-box:fill-box;transform-origin:center;transform:scale(0);animation:dot .5s cubic-bezier(.2,1.6,.4,1) forwards}
+.mark circle:nth-of-type(1){animation-delay:.85s}.mark circle:nth-of-type(2){animation-delay:.97s}.mark circle:nth-of-type(3){animation-delay:1.09s}
+@keyframes draw{to{stroke-dashoffset:0}}@keyframes dot{to{transform:scale(1)}}
+/* stepper */
+.steps{list-style:none;margin:34px 0 0;padding:0}
+.steps li{position:relative;display:flex;gap:14px;padding-bottom:24px;color:var(--muted)}
+.steps li:last-child{padding-bottom:0}
+.steps li::before{content:"";position:absolute;left:15px;top:36px;bottom:4px;width:2px;background:var(--line);transition:background .3s}
+.steps li:last-child::before{display:none}
+.steps li.done::before{background:var(--green)}
+.steps .n{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.9rem;background:var(--surface);border:2px solid var(--line);transition:all .25s}
+.steps .t b{display:block;color:var(--ink);font-size:1rem;line-height:1.3}
+.steps .t small{font-size:.86rem}
+.steps li.on .n{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 5px color-mix(in srgb,var(--blue) 22%,transparent)}
+.steps li.done .n{background:var(--green);border-color:var(--green);color:#fff}
+@media(max-width:880px){
+  .shell{grid-template-columns:1fr}.hero{position:static}
+  .mark{width:150px;margin-bottom:18px}
+  .steps{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin:22px 0 0}
+  .steps li{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:0}
+  .steps li::before,.steps .t small{display:none}
+  .steps .t b{font-size:.8rem;color:var(--muted)}.steps li.on .t b{color:var(--ink)}
+}
+
+/* card */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(28px,4.5vw,44px) clamp(20px,4vw,40px) clamp(22px,4vw,36px);--accent:var(--blue);box-shadow:inset 0 7px 0 var(--accent);transition:box-shadow .3s}
+.card[data-s="1"]{--accent:var(--red)}.card[data-s="2"]{--accent:var(--green)}
+.card[data-s="2"] .btn-p{background:var(--green-d)}
+.card h2{font-size:1.65rem;letter-spacing:-.02em}
+.card input[type=text],.card input[type=email],.card input[type=tel],.card select{padding:13px 14px}
+.card h2{margin:0 0 4px;font-size:1.35rem;letter-spacing:-.015em}
+.card .sub{margin:0 0 22px;color:var(--muted);font-size:.95rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.full{grid-column:1/-1}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+label,.lbl{display:block;font-weight:600;font-size:.92rem;margin-bottom:6px}
+.hint{font-weight:400;color:var(--muted);font-size:.85rem}
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;transition:border-color .15s,box-shadow .15s}
+textarea{resize:vertical;min-height:110px}
+input:hover,select:hover,textarea:hover{border-color:var(--muted)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 28%,transparent)}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--red)}
+.field.ok input,.field.ok select{border-color:var(--green)}
+.err{display:none;color:var(--err);font-size:.85rem;margin-top:6px}
+.field.bad .err{display:block}
+.pre{display:flex;align-items:stretch}
+.pre span{display:grid;place-items:center;padding:0 12px;border:1.5px solid var(--line);border-right:0;border-radius:10px 0 0 10px;background:var(--bg);color:var(--muted);font-weight:600}
+.pre input{border-radius:0 10px 10px 0}
+.field.bad .pre span{border-color:var(--red)}.field.ok .pre span{border-color:var(--green)}
+
+/* batch chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{margin:0;padding:8px 16px;border:1.5px solid var(--line);border-radius:999px;cursor:pointer;font-weight:600;transition:all .15s}
+.chips label:hover{border-color:var(--blue)}
+.chips input:checked+label{background:var(--blue);border-color:var(--blue);color:#fff}
+.chips input:focus-visible+label{box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 35%,transparent)}
+.field.bad .chips label{border-color:var(--red)}
+
+/* domains */
+.domains{display:grid;gap:12px}
+.dom input{position:absolute;opacity:0;pointer-events:none}
+.dom label{display:flex;gap:14px;align-items:flex-start;margin:0;padding:16px;border:1.5px solid var(--line);border-left-width:6px;border-radius:14px;cursor:pointer;font-weight:400;transition:background .15s,border-color .15s}
+.dom label:hover{background:var(--bg)}
+.dom .ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-family:ui-monospace,Menlo,monospace}
+.dom strong{display:block;font-size:1.02rem}
+.dom small{color:var(--muted);font-size:.88rem}
+.dom.t label{border-left-color:var(--blue)}.dom.t .ic{background:var(--blue-t);color:var(--blue-d)}
+.dom.d label{border-left-color:var(--red)}.dom.d .ic{background:var(--red-t);color:var(--red-d)}
+.dom.o label{border-left-color:var(--green)}.dom.o .ic{background:var(--green-t);color:var(--green-d)}
+.dom.t input:checked+label{background:var(--blue-t);border-color:var(--blue)}
+.dom.d input:checked+label{background:var(--red-t);border-color:var(--red)}
+.dom.o input:checked+label{background:var(--green-t);border-color:var(--green)}
+.dom input:focus-visible+label{outline:3px solid color-mix(in srgb,var(--blue) 45%,transparent);outline-offset:2px}
+.count{float:right;color:var(--muted);font-weight:400;font-size:.82rem}
+
+/* upload */
+.drop{display:block;text-align:center;padding:34px 18px;border:2px dashed var(--line);border-radius:16px;cursor:pointer;transition:all .15s;margin:0;font-weight:400}
+.drop:hover,.drop.over{border-color:var(--blue);background:var(--blue-t)}
+.drop strong{display:block;font-size:1.05rem}
+.drop small{color:var(--muted)}
+.drop input{position:absolute;opacity:0;width:1px;height:1px}
+.drop:focus-within{outline:3px solid color-mix(in srgb,var(--blue) 45%,transparent);outline-offset:2px}
+.field.bad .drop{border-color:var(--red)}
+.file{display:none;align-items:center;gap:12px;padding:14px;border:1.5px solid var(--green);background:var(--green-t);border-radius:14px}
+.file.show{display:flex}
+.file .ft{flex:1;min-width:0}.file b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file small{color:var(--muted)}
+
+/* buttons */
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:28px}
+button{font:inherit;font-weight:700;border-radius:999px;padding:12px 26px;cursor:pointer;border:1.5px solid transparent;transition:transform .1s,box-shadow .15s,background .15s}
+button:focus-visible{outline:3px solid color-mix(in srgb,var(--blue) 45%,transparent);outline-offset:2px}
+.btn-p{background:var(--blue-d);color:#fff}
+.btn-p:hover{box-shadow:0 2px 10px color-mix(in srgb,var(--blue) 45%,transparent)}
+.btn-p:active{transform:scale(.98)}
+.btn-g{background:transparent;color:var(--blue-d);border-color:var(--line)}
+.btn-g:hover{background:var(--blue-t)}
+.btn-x{background:transparent;color:var(--muted);padding:6px 12px;border-color:var(--line)}
+:root[data-theme="dark"] .btn-p{color:#0b1b34}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn-p{color:#0b1b34}}
+.panel[hidden]{display:none}
+
+/* success */
+.done{text-align:center;padding:12px 0}
+.done .tick{width:72px;height:72px;border-radius:50%;background:var(--green);display:grid;place-items:center;margin:0 auto 16px;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.sum{text-align:left;margin:22px 0 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sum div{display:flex;justify-content:space-between;gap:14px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.sum div:last-child{border:0}
+.sum dt{color:var(--muted)}.sum dd{margin:0;font-weight:600;text-align:right;overflow-wrap:anywhere}
+.note{margin:18px 0 0;padding:12px 14px;border-radius:12px;background:var(--yellow);color:#202124;font-weight:600;font-size:.92rem}
+.credit{margin-top:22px;text-align:center;color:var(--muted);font-size:.88rem}
+.theme{margin-left:auto;white-space:nowrap;font-size:.85rem}
+.tip{font-size:.85rem;color:var(--muted);margin-top:6px}
+.tip button{padding:2px 12px;font-size:.8rem;margin-left:4px}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px}
+.row button{padding:9px 18px;font-size:.92rem}
+.ref{display:inline-block;margin-top:6px;padding:4px 12px;border-radius:999px;background:var(--blue-t);color:var(--blue-d);font-weight:700;font-family:ui-monospace,Menlo,monospace}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.mark .br{stroke-dashoffset:0}.mark circle{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <div><b>Google Developer Groups</b><span class="sm">On Campus · Recruitment 2026</span></div>
+    <button type="button" class="btn-x theme" id="theme">Dark mode</button>
+  </header>
+  <div class="shell">
+    <aside class="hero">
+      <svg class="mark" viewBox="0 0 64 40" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path class="br" d="M16 6 4 20l12 14" stroke="#4285F4"/><path class="br br2" d="M48 6l12 14-12 14" stroke="#34A853"/>
+        <circle cx="24" cy="20" r="3.6" fill="#EA4335" stroke="none"/><circle cx="32" cy="20" r="3.6" fill="#FBBC04" stroke="none"/><circle cx="40" cy="20" r="3.6" fill="#4285F4" stroke="none"/>
+      </svg>
+      <h1>Build with us.<br>Join GDG.</h1>
+      <p class="lead">Three short steps and about five minutes. Tell us who you are, pick a team, attach your resume.</p>
+      <ol class="steps" id="steps" aria-label="Progress">
+        <li class="on"><span class="n">1</span><span class="t"><b>Your details</b><small>Name, SAP ID and contact</small></span></li>
+        <li><span class="n">2</span><span class="t"><b>Your team</b><small>Domain, strengths and motivation</small></span></li>
+        <li><span class="n">3</span><span class="t"><b>Your resume</b><small>PDF or Word, up to 5 MB</small></span></li>
+      </ol>
+    </aside>
+    <div class="main">
+  <form class="card" id="form" novalidate autocomplete="on">
+    <!-- STEP 1 -->
+    <section class="panel" data-step="0">
+      <h2>Your details</h2>
+      <p class="sub">Use the same details as on your university records.</p>
+      <div class="grid">
+        <div class="field full" data-f="name">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" placeholder="e.g. Aarav Sharma" autocomplete="name" maxlength="60">
+          <div class="err" id="name-e"></div>
+        </div>
+        <div class="field" data-f="sap">
+          <label for="sap">SAP ID <span class="hint">(starts with 5900)</span></label>
+          <input type="text" id="sap" name="sap" inputmode="numeric" placeholder="5900XXXXX" maxlength="9" autocomplete="off">
+          <div class="err" id="sap-e"></div>
+        </div>
+        <div class="field" data-f="spec">
+          <label for="spec">Specialization</label>
+          <select id="spec" name="spec">
+            <option value="">Select your specialization</option>
+            <option>Computer Science (Core)</option><option>AI &amp; Machine Learning</option><option>Data Science</option>
+            <option>Cyber Security</option><option>Cloud Computing &amp; DevOps</option><option>Full Stack Development</option>
+            <option>Internet of Things</option><option>Other</option>
+          </select>
+          <div class="err" id="spec-e"></div>
+        </div>
+        <div class="field" data-f="batch">
+          <label for="batch">Batch <span class="hint">(e.g. B1, B12, B105)</span></label>
+          <input type="text" id="batch" name="batch" placeholder="B1" maxlength="4" autocomplete="off">
+          <div class="err" id="batch-e"></div>
+        </div>
+        <div class="field" data-f="phone">
+          <label for="phone">Mobile number</label>
+          <div class="pre"><span>+91</span><input type="tel" id="phone" name="phone" inputmode="numeric" placeholder="98765 43210" maxlength="11" autocomplete="tel-national"></div>
+          <div class="err" id="phone-e"></div>
+        </div>
+        <div class="field" data-f="email">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" maxlength="80">
+          <div class="err" id="email-e"></div>
+          <div class="tip" id="email-t"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="panel" data-step="1" hidden>
+      <h2>Where do you want to contribute?</h2>
+      <p class="sub">Pick the team you’d most like to join. You can explore others after you’re in.</p>
+      <div class="field" data-f="domain">
+        <div class="domains" role="radiogroup" aria-label="Domain">
+          <div class="dom t"><input type="radio" name="domain" id="d1" value="Technical"><label for="d1"><span class="ic">&lt;/&gt;</span><span><strong>Technical</strong><small>Web, app, cloud and AI projects. Run workshops, study jams and build days.</small></span></label></div>
+          <div class="dom d"><input type="radio" name="domain" id="d2" value="Design"><label for="d2"><span class="ic">Aa</span><span><strong>Design</strong><small>UI/UX, posters, social media and event branding for every GDG event.</small></span></label></div>
+          <div class="dom o"><input type="radio" name="domain" id="d3" value="Operations"><label for="d3"><span class="ic">⚙</span><span><strong>Operations</strong><small>Event logistics, sponsors, outreach and keeping the chapter running.</small></span></label></div>
+        </div>
+        <div class="err" id="domain-e"></div>
+      </div>
+      <div class="field" data-f="skills" id="skillsBox" style="margin-top:22px" hidden>
+        <span class="lbl" id="sk-l">Your strengths <span class="hint">(pick 1 to 5)</span></span>
+        <div class="chips" id="skills" role="group" aria-labelledby="sk-l"></div>
+        <div class="err" id="skills-e"></div>
+      </div>
+      <div class="field" data-f="link" style="margin-top:22px">
+        <label for="link">Portfolio, GitHub or LinkedIn <span class="hint">(optional)</span></label>
+        <input type="text" id="link" name="link" placeholder="github.com/yourname" maxlength="120" autocomplete="url">
+        <div class="err" id="link-e"></div>
+      </div>
+      <div class="field" data-f="why" style="margin-top:22px">
+        <label for="why">Why do you want to join this team? <span class="count" id="cnt">0 / 300</span></label>
+        <textarea id="why" name="why" maxlength="300" placeholder="Tell us what you’d like to build, learn or organize (at least 30 characters)."></textarea>
+        <div class="err" id="why-e"></div>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="panel" data-step="2" hidden>
+      <h2>Upload your resume</h2>
+      <p class="sub">PDF, DOC or DOCX, up to 5 MB. Keep it to one or two pages.</p>
+      <div class="field" data-f="resume">
+        <label class="drop" id="drop" for="resume">
+          <strong>Drop your resume here, or click to browse</strong>
+          <small>PDF, DOC, DOCX · max 5 MB</small>
+          <input type="file" id="resume" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+        </label>
+        <div class="file" id="file"><div class="ft"><b id="fn"></b><small id="fs"></small></div><button type="button" class="btn-x" id="rm">Remove</button></div>
+        <div class="err" id="resume-e"></div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="btn-g" id="back" style="visibility:hidden">Back</button>
+      <button type="button" class="btn-p" id="next">Continue</button>
+    </div>
+  </form>
+  <p class="credit">By Rishi Sagaram · SAP ID 590011171</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var panels=[].slice.call(document.querySelectorAll('.panel'));
+  var stepEls=[].slice.call($('#steps').children);
+  var cur=0, resumeFile=null;
+
+  var checks={
+    name:function(v){v=v.trim().replace(/\s+/g,' ');
+      if(!v)return'Enter your full name.';
+      if(!/^[A-Za-z][A-Za-z.'\- ]*$/.test(v))return'Use letters only. No numbers or symbols.';
+      if(v.length<3||v.indexOf(' ')<0)return'Enter your first and last name.';return''},
+    sap:function(v){
+      if(!v)return'Enter your SAP ID.';
+      if(!/^\d+$/.test(v))return'SAP ID can only contain digits.';
+      if(v.indexOf('5900')!==0)return'SAP ID must start with 5900.';
+      if(v.length!==9)return'SAP ID must be 9 digits, like 5900XXXXX.';return''},
+    spec:function(v){return v?'':'Select your specialization.'},
+    batch:function(v){v=v.trim();
+      if(!v)return'Enter your batch, like B1 or B105.';
+      if(!/^B\d{1,3}$/i.test(v))return'Batch must be the letter B followed by a number, like B7 or B112.';
+      if(parseInt(v.slice(1),10)<1)return'Batch number must be 1 or higher.';return''},
+    phone:function(v){var d=v.replace(/[\s-]/g,'');
+      if(!d)return'Enter your mobile number.';
+      if(!/^\d+$/.test(d))return'Mobile number can only contain digits.';
+      if(d.length!==10)return'Enter a 10-digit mobile number.';
+      if(!/^[6-9]/.test(d))return'Indian mobile numbers start with 6, 7, 8 or 9.';
+      if(/^(\d)\1{9}$/.test(d))return'This number doesn’t look valid.';return''},
+    email:function(v){v=v.trim();
+      if(!v)return'Enter your email address.';
+      if(/\s/.test(v))return'Email can’t contain spaces.';
+      if(!/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*\.[A-Za-z]{2,}$/.test(v)||/\.\./.test(v))return'Enter a valid email, like name@example.com.';return''},
+    domain:function(){return document.querySelector('input[name=domain]:checked')?'':'Pick a team to continue.'},
+    skills:function(){return document.querySelector('#skills input:checked')?'':'Pick at least one strength.'},
+    link:function(v){v=v.trim();if(!v)return'';
+      try{var u=new URL(/^https?:\/\//i.test(v)?v:'https://'+v);
+        if(/\s/.test(v)||u.hostname.indexOf('.')<1||u.hostname.slice(-1)==='.')throw 0;return''}
+      catch(e){return'Enter a valid link, like github.com/yourname.'}},
+    why:function(v){v=v.trim();
+      if(!v)return'Tell us why you want to join.';
+      if(v.length<30)return'Write at least 30 characters ('+(30-v.length)+' more).';return''},
+    resume:function(){
+      if(!resumeFile)return'Upload your resume to continue.';return''}
+  };
+  var stepFields=[['name','sap','spec','batch','phone','email'],['domain','skills','link','why'],['resume']];
+
+  function val(f){
+    var el=document.getElementById(f);
+    return el&&'value' in el?el.value:'';
+  }
+  function validate(f,show){
+    var msg=checks[f](val(f));
+    var box=document.querySelector('[data-f='+f+']');
+    var e=document.getElementById(f+'-e');
+    if(show!==false){
+      box.classList.toggle('bad',!!msg);
+      box.classList.toggle('ok',!msg&&['name','sap','spec','batch','phone','email'].indexOf(f)>-1);
+      e.textContent=msg;
+      var inp=document.getElementById(f);
+      if(inp&&inp.setAttribute){msg?inp.setAttribute('aria-invalid','true'):inp.removeAttribute('aria-invalid');inp.setAttribute('aria-describedby',f+'-e')}
+    }
+    return msg;
+  }
+  function validateStep(i){
+    var first=null;
+    stepFields[i].forEach(function(f){
+      if(validate(f)&&!first)first=f;
+    });
+    if(first){
+      var t=document.getElementById(first);if(!t||t.tagName==='DIV')t=document.querySelector('[data-f='+first+'] input');
+      if(t)t.focus();
+    }
+    return !first;
+  }
+
+  // live validation
+  ['name','sap','spec','batch','phone','email','link','why'].forEach(function(f){
+    var el=document.getElementById(f);
+    el.addEventListener('blur',function(){if(el.value!==''){validate(f);if(f==='email')emailTip()}});
+    el.addEventListener('input',function(){
+      if(f==='batch')el.value=el.value.toUpperCase().replace(/[^B\d]/g,'').slice(0,4);
+      if(f==='sap')el.value=el.value.replace(/\D/g,'').slice(0,9);
+      if(f==='phone'){var d=el.value.replace(/\D/g,'').slice(0,10);el.value=d.length>5?d.slice(0,5)+' '+d.slice(5):d}
+      if(f==='why')$('#cnt').textContent=el.value.length+' / 300';
+      if(document.querySelector('[data-f='+f+']').classList.contains('bad'))validate(f);
+    });
+  });
+    var SK={Technical:['Web development','Android / Flutter','Python','AI / ML','Google Cloud','DSA','Cyber security','Open source'],
+    Design:['Figma','UI / UX','Graphic design','Video editing','Motion design','Branding','Illustration','Poster design'],
+    Operations:['Event management','Sponsorships','Public speaking','Social media','Content writing','Team coordination','Outreach','Budgeting']};
+  document.querySelectorAll('input[name=domain]').forEach(function(r){r.addEventListener('change',function(){
+    validate('domain');
+    var box=$('#skillsBox'),c=$('#skills');box.hidden=false;box.classList.remove('bad');$('#skills-e').textContent='';c.textContent='';
+    SK[r.value].forEach(function(t,i){
+      var inp=document.createElement('input');inp.type='checkbox';inp.id='sk'+i;inp.value=t;
+      var lb=document.createElement('label');lb.htmlFor='sk'+i;lb.textContent=t;c.appendChild(inp);c.appendChild(lb);
+    });
+  })});
+  $('#skills').addEventListener('change',function(e){
+    var over=this.querySelectorAll('input:checked').length>5;
+    if(over)e.target.checked=false;
+    validate('skills');
+    if(over){$('#skillsBox').classList.add('bad');$('#skills-e').textContent='You can pick up to 5.'}
+  });
+
+  // resume
+  var drop=$('#drop'),fin=$('#resume');
+  function setFile(f){
+    var box=document.querySelector('[data-f=resume]'),e=$('#resume-e');
+    var ok=/\.(pdf|docx?)$/i.test(f.name);
+    var msg='';
+    if(!ok)msg='Only PDF, DOC or DOCX files are accepted.';
+    else if(f.size>5*1024*1024)msg='File is '+(f.size/1048576).toFixed(1)+' MB. Keep it under 5 MB.';
+    else if(f.size===0)msg='This file is empty. Choose another one.';
+    if(msg){resumeFile=null;box.classList.add('bad');e.textContent=msg;$('#file').classList.remove('show');drop.style.display='';fin.value='';return}
+    resumeFile=f;box.classList.remove('bad');e.textContent='';
+    $('#fn').textContent=f.name;$('#fs').textContent=(f.size/1024<1024?Math.max(1,Math.round(f.size/1024))+' KB':(f.size/1048576).toFixed(1)+' MB');
+    $('#file').classList.add('show');drop.style.display='none';
+  }
+  fin.addEventListener('change',function(){if(fin.files[0])setFile(fin.files[0])});
+  ['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('over')})});
+  ['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('over')})});
+  drop.addEventListener('drop',function(e){var f=e.dataTransfer.files[0];if(f)setFile(f)});
+  $('#rm').addEventListener('click',function(){resumeFile=null;fin.value='';$('#file').classList.remove('show');drop.style.display='';fin.focus()});
+
+  // navigation
+  function go(i){
+    cur=i;
+    panels.forEach(function(p,k){p.hidden=k!==i});
+    stepEls.forEach(function(s,k){s.className=k<i?'done':k===i?'on':'';s.firstChild.textContent=k<i?'✓':k+1});
+    $('#back').style.visibility=i?'visible':'hidden';
+    $('#next').textContent=i===2?'Submit application':'Continue';
+    $('#form').dataset.s=i;var r=$('#form').getBoundingClientRect();if(r.top<0)window.scrollTo({top:scrollY+r.top-16,behavior:'smooth'});
+  }
+  $('#next').addEventListener('click',function(){
+    if(!validateStep(cur))return;
+    if(cur<2)return go(cur+1);
+    submit();
+  });
+  $('#back').addEventListener('click',function(){go(cur-1)});
+  $('#form').addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'&&e.target.tagName!=='BUTTON'){e.preventDefault();$('#next').click()}
+  });
+
+  var TYPO={'gmail.con':'gmail.com','gmial.com':'gmail.com','gmai.com':'gmail.com','gamil.com':'gmail.com','gmail.co':'gmail.com','yahooo.com':'yahoo.com','hotmial.com':'hotmail.com','outlok.com':'outlook.com'};
+  function emailTip(){
+    var v=val('email').trim().toLowerCase(),t=$('#email-t'),at=v.lastIndexOf('@');t.textContent='';
+    var fix=at>0&&TYPO[v.slice(at+1)];if(!fix)return;
+    var sug=v.slice(0,at+1)+fix;t.appendChild(document.createTextNode('Did you mean '+sug+'?'));
+    var b=document.createElement('button');b.type='button';b.className='btn-g';b.textContent='Use this';
+    b.onclick=function(){$('#email').value=sug;t.textContent='';validate('email')};t.appendChild(b);
+  }
+  var root=document.documentElement;
+  function isDark(){return root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches}
+  function paint(){$('#theme').textContent=isDark()?'Light mode':'Dark mode'}
+  $('#theme').onclick=function(){root.dataset.theme=isDark()?'light':'dark';paint()};paint();
+  function confetti(){
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    var c=document.createElement('canvas');c.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50';
+    document.body.appendChild(c);c.width=innerWidth;c.height=innerHeight;var x=c.getContext('2d'),P=[],cols=['#4285F4','#EA4335','#FBBC04','#34A853'];
+    for(var i=0;i<140;i++)P.push({x:c.width/2,y:c.height*.35,vx:(Math.random()-.5)*14,vy:-Math.random()*13-3,s:6+Math.random()*6,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%4]});
+    var t0=performance.now();
+    (function f(t){var k=t-t0;x.clearRect(0,0,c.width,c.height);
+      P.forEach(function(p){p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.globalAlpha=Math.max(0,1-k/2600);x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);x.restore()});
+      if(k<2600)requestAnimationFrame(f);else c.remove()})(t0);
+  }
+  function submit(){
+    for(var i=0;i<3;i++){if(!validateStep(i)){go(i);validateStep(i);return}}
+    var ref='GDG-'+Date.now().toString(36).toUpperCase().slice(-6);
+    var rows=[['Name',val('name').trim().replace(/\s+/g,' ')],['SAP ID',val('sap')],['Batch',val('batch').trim().toUpperCase()],
+      ['Specialization',val('spec')],['Mobile','+91 '+val('phone')],['Email',val('email').trim().toLowerCase()],
+      ['Team',document.querySelector('input[name=domain]:checked').value],
+      ['Strengths',[].map.call(document.querySelectorAll('#skills input:checked'),function(i){return i.value}).join(', ')]];
+    if(val('link').trim())rows.push(['Link',val('link').trim()]);
+    rows.push(['Resume',resumeFile.name]);
+    var card=$('#form');card.textContent='';
+    var d=document.createElement('div');d.className='done';
+    d.innerHTML='<div class="tick"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2 style="margin:0 0 6px;font-size:1.6rem">Application received</h2><p class="sub" style="margin:0">Keep this reference ID handy. We’ll email you about the next round.</p><span class="ref"></span>';
+    d.querySelector('.ref').textContent=ref;
+    var dl=document.createElement('dl');dl.className='sum';
+    rows.forEach(function(r){var w=document.createElement('div'),t=document.createElement('dt'),v=document.createElement('dd');t.textContent=r[0];v.textContent=r[1];w.appendChild(t);w.appendChild(v);dl.appendChild(w)});
+    d.appendChild(dl);
+    var n=document.createElement('p');n.className='note';
+    n.textContent='Note: No data is stored. This form is for illustration only.';
+    d.appendChild(n);
+    var row=document.createElement('div');row.className='row';
+    function mk(txt,cls,fn){var b=document.createElement('button');b.type='button';b.className=cls;b.textContent=txt;b.onclick=function(){fn(b)};row.appendChild(b)}
+    mk('Copy ID','btn-g',function(b){
+      if(navigator.clipboard)navigator.clipboard.writeText(ref).catch(function(){});b.textContent='Copied'});
+    mk('Download receipt','btn-g',function(){
+      var txt='GDG Recruitment 2026 - Application receipt\nReference: '+ref+'\n\n'+rows.map(function(r){return r[0]+': '+r[1]}).join('\n')+'\n\nNote: No data is stored. This form is for illustration only.\n';
+      var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=ref+'-receipt.txt';a.click()});
+    mk('Register another','btn-p',function(){location.reload()});
+    d.appendChild(row);card.appendChild(d);confetti();
+    
+    stepEls.forEach(function(s){s.className='done'});
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+})();
+</script>
+</body>
+</html>
